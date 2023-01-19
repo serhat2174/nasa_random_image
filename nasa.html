@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>NASA Image Gallery</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+      
+      body {
+        background-color: black;
+        font-family: 'Oswald', sans-serif;
+      }
+      
+      img {
+        display: block;
+        margin: 0 auto;
+        max-width: 750px;
+        width: 100%;
+        height: auto;
+        filter: hue-rotate(180deg) brightness(200%);
+      }
+      
+      h2 {
+        color: white;
+        text-align: center;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="color: white; text-align: center;">NASA Image Gallery</h1>
+    <button onclick="displayRandomImage()" style="display: block; margin: 0 auto;">Next</button>
+    <br>
+    <img id="nasa-image" src="">
+    <h2 id="image-title"></h2>
+    
+    <script>
+      async function displayRandomImage() {
+  // Generate a random word
+  const words = ['galaxy', 'planet'];
+  const randomIndex = Math.floor(Math.random() * words.length);
+  const randomWord = words[randomIndex];
+
+  // Use the NASA Image and Video Library API to search for images using the random word
+  const response = await fetch(`https://images-api.nasa.gov/search?q=${randomWord}`);
+  const data = await response.json();
+  const images = data.collection.items;
+
+  // Select a random image from the list
+  const randomImageIndex = Math.floor(Math.random() * images.length);
+  const randomImage = images[randomImageIndex];
+  const imageURL = randomImage.links[0].href;
+  const imageTitle = randomImage.data[0].title;
+
+  // Update the src and title attributes of the <img> and <h2> elements
+  document.getElementById("nasa-image").src = imageURL;
+  document.getElementById("image-title").innerHTML = imageTitle;
+}
+
+// Display a random image when the page loads
+displayRandomImage();
+
+    </script>
+  </body>
+</html>
